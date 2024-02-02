@@ -48,6 +48,10 @@ console.log(averageWithFiveDecimals);
 const letters = "abc";
 // Get me the character "c"
 
+//const targetLetter = letters[2];
+//const characterC = letters.charAt(2);
+//const charC = letters.substring(2,3);
+
 const targetLetter = "c";
 
 const indexOfLetter = letters.indexOf(targetLetter);
@@ -65,9 +69,9 @@ const fact = "You are learning javascript!";
 
 // capitalize the J in Javascript
 
-const updatedFact = fact.replace('javascript', 'Javascript')
+const capitalizedJ = fact.replace('javascript', 'Javascript')
 
-console.log(updatedFact);
+console.log(capitalizedJ);
 
 
 // --------------------------------------
