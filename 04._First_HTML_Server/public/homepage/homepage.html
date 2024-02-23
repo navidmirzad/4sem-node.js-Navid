@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- <link rel="stylesheet" href="./homepage.css"> -->
+</head>
+<body>
+    <h1>Does this work!?!?!?!</h1>
+
+    <!---------INLINE STYLING--------->
+    <div id="celebration-box" style="color: green">
+        <h3>Yes it does</h3>
+    </div>
+
+    <input id="name-input" placeholder="Insert name here" />
+    <button onclick="getGreeting()">Get greeting</button>
+
+    <h2 id="greeting-text"></h2>
+
+    <script>
+    const nameInput = document.getElementById("name-input")
+    const greetingH2 = document.getElementById("greeting-text")
+
+    function getGreeting() {
+        const name = nameInput.value;
+        fetch("/greeting?name=" + name)
+        .then((response) => response.json())
+        .then((result) => {
+            greetingH2.textContent = result.data;
+        });
+    }
+
+
+    </script>
+    <!-- <script src="./homepage.js"></script> -->
+</body>
+</html>
