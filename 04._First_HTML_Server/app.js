@@ -11,18 +11,23 @@ app.get("/publicsquare", (req, res) => {
     res.sendFile(__dirname + "/public/publicSquare/publicSquare.html");
 });
 
-const knownName = "Navid";
+const knownNames = ["Navid", "Juicy", "Anders"];
 app.get("/greeting", (req, res) => {
-    const name = req.query.name;
-
+    const providedName = req.query.name;
     // http://localhost:8080/greeting?name=Navid
-
-    if (name === knownName) {
-        res.send({ data: "Hey there, how are you doing " + knownName})
+    if (knownNames.includes(providedName)) {
+        res.send({ data: "Hey there, how are you doing " + providedName})
     } else {
         res.send({ data: "Hello Stranger!" })
     } 
 })
+
+app.get("/knownpeople", (req, res) => {
+    const knownNamesString = knownNames.join(', ');
+    const knownNamesCount = knownNames.length;
+    res.send({ data: `Known names: ${knownNamesString}`, count: knownNamesCount });
+});
+
 
 const PORT = 8080;
 app.listen(PORT, () => console.log("Server is running on port", PORT));

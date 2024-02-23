@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Square</title>
+</head>
+<body>
+        <h1>Public Square</h1>
+        <h3>Monument</h3>
+
+
+        <h1>Known People</h1>
+        <h3 id="known-people-amount"></h3>
+
+    <script>
+        const knownPeopleAmount = document.getElementById("known-people-amount")
+        
+        function getKnownPeople() {
+            fetch("/knownpeople")
+            .then((response) => response.json())
+            .then((result) => {
+                knownPeopleAmount.textContent = result.data;
+            })
+         }
+
+         getKnownPeople();
+    </script>
+</body>
+</html>
