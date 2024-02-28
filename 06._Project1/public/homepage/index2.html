@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expense Calculator</title>
+</head>
+<body>
+
+    <h1>Expense Tracker</h1>
+    
+    <main>
+        <header>
+          <div>
+            <h5>Total Balance</h5>
+            <span id="balance">$0.00</span>
+          </div>
+          <div>
+            <h5>Income</h5>
+            <span id="income">$0.00</span>
+          </div>
+          <div>
+            <h5>Expense</h5>
+            <span id="expense">$0.00</span>
+          </div>
+        </header>
+  
+        <section>
+          <h3>Transactions</h3>
+          <ul id="transactionList"></ul>
+          <div id="status"></div>
+        </section>
+  
+        <section>
+          <h3>Add Transaction</h3>
+  
+          <form id="transactionForm">
+            <div>
+              <label for="type">
+                <input type="checkbox" name="type" id="type" />
+                <div class="option">
+                  <span>Expense</span>
+                  <span>Income</span>
+                </div>
+              </label>
+            </div>
+            <div>
+              <label for="name">Name</label>
+              <input type="text" name="name" required />
+            </div>
+            <div>
+              <label for="amount">Amount</label>
+              <input
+                type="number"
+                name="amount"
+                value="0"
+                min="0.01"
+                step="0.01"
+                required
+              />
+            </div>
+            <div>
+              <label for="date">Date</label>
+              <input type="date" name="date" required />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </section>
+      </main>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+}
+
+main {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+header div {
+  text-align: center;
+}
+
+header h5 {
+  font-weight: 400;
+  color: #666;
+}
+
+header span {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+section h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+#transactionList {
+  list-style: none;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  color: #666;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='date'],
+button[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button[type='submit'] {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button[type='submit']:hover {
+  background-color: #0056b3;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.option span {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+input[type='checkbox']:checked + .option span:nth-child(1) {
+  background-color: #ff4545;
+  color: #fff;
+}
+
+input[type='checkbox']:checked + .option span:nth-child(2) {
+  background-color: #20c997;
+  color: #fff;
+}
+
+
+    </style>
+
+    <script>
+
+
+    </script>
+</body>
+</html>
