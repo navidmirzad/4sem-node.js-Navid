@@ -51,7 +51,7 @@ app.post("/drinks", (req, res) => {
       .send("Name is required to be a minimum of 3 characters...");
 
   const drink = {
-    id: drink.id = ++nextId, // not sure if this works? otherwise do drinkslist.length + 1
+    id: (drink.id = ++nextId), // not sure if this works? otherwise do drinkslist.length + 1
     name: req.body.name,
   };
 
@@ -60,9 +60,10 @@ app.post("/drinks", (req, res) => {
 });
 
 app.put("/drinks/:id", (req, res) => {
-  const drink = drinksList.find((drink) => drink.id === parseInt(req.params.id)
+  const drink = drinksList.find(
+    (drink) => drink.id === parseInt(req.params.id)
   );
-  
+
   if (!drink) return res.status(404).send("Error 404 - Drink not found...");
 
   const { error } = validateDrink(req.body);
