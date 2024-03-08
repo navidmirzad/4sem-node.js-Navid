@@ -16,9 +16,9 @@ export default async function getMatches(numberOfMatches=5) {
 function getDogProfile() {
     return {
     name: fakerEN_IN.person.fullName(),
-    bio: fakerEN_IN.person.bio,
-    streetAdress: fakerEN_IN.location.streetAddress,
-    city: fakerEN_IN.location.city,
+    bio: fakerEN_IN.person.bio(),
+    streetAdress: fakerEN_IN.location.streetAddress(),
+    city: fakerEN_IN.location.city(),
     }
 }
 
