@@ -20,7 +20,7 @@ export function renderPage(page, config = {}) {
     .toString();
   return (
     navbar
-      .replace("$TAB_TITLE$", config.tabTitle ?? "Dog Finder")
+      .replace("$TAB_TITLE$", config.tabTitle ?? "Application Tracker")
       .replace("$CSS_LINKS$", config.CSSLinks ?? "") +
     page +
     footer
