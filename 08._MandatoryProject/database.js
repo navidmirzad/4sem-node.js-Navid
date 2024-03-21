@@ -1,11 +1,16 @@
-const { createPool } = require("mysql");
+import mysql from "mysql";
 
-const pool = createPool({
+var mysqlConnection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "rootroot",
-  database: "ApplicationTracker",
-  connectionLimit: 10,
+  user: "applicationUser",
+  password: "password",
+  database: "applicationTracker",
 });
 
-pool.query(``);
+mysqlConnection.connect((error) => {
+  if (!error) {
+    console.log("Succesfully connected to MySQL Database");
+  } else {
+    console.log("Failed connection to MySQL Database");
+  }
+});
