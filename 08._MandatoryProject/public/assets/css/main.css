@@ -1,9 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap');
-
 body {
     display: flex;
     flex-direction: column;
@@ -54,10 +48,84 @@ nav a {
 }
 
 nav a:hover {
-    color: orange;
+    color: rgb(255, 255, 255);
 }
 
 footer {
     display: flex;
     justify-content: center;
+}
+
+.dropbtn {
+  background-color: #202B38;
+  color: #ffffff;
+  font-size: 20px;
+  margin: auto;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #000000;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #31424f;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #000000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #4e6f87;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #202B38;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; 
+  margin-top: 20px; 
+}
+
+.button-link {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+  font-size: 20px;
+  margin: auto;
+  text-decoration: none;
+  color: #fff;
+  background-color: #202B38;
+  border: 2px solid 4e6f87;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.button-link:hover {
+  background-color: #4e6f87;
+  border-color: #405563;
+}
+
+.button-link + .button-link {
+  margin-top: 20px;
 }

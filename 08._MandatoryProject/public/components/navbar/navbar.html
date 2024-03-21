@@ -12,17 +12,26 @@
     
 
     <div id="login">
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
         <button><a href="/login"></a>Login</button>
         <button><a href="/register"></a>Register</button>
     </div>
 
     <div id="navbar">
-        <h1 id="logo"><a href="/">Application Tracker</a></h1>
+        <h1 id="logo"><a href="/">Mandatory</a></h1>
         <nav>
             <a href="/">Home</a>
-            <a href="/applications">Applications</a>
+            <div class="dropdown">
+                <button class="dropbtn">Topics</button>
+                <div class="dropdown-content">
+                    <a href="/introduction">Introduction</a>
+                    <a href="/functionality">Functionality</a>
+                    <a href="/crud">CRUD</a>
+                    <a href="/fetch">Fetch</a>
+                    <a href="/rendering">Rendering</a>
+                    <a href="/async">Async</a>
+                    <a href="/structure">Structure</a>
+                </div>
+            </div>
             <a href="/contact">Contact</a>
         </nav>
     </div>
