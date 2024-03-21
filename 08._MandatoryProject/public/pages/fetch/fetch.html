@@ -1,0 +1,62 @@
+<h1>Fetch</h1>
+
+<h2>There is two popular ways to fetch data from an API</h2>
+<h3>They both fetch the data using async <br>
+<ul>
+    <li>One way is to use chain .then() method to handle promises.
+    </li>
+    <img src="/assets/images/fetchh.png" alt="fetch-image"
+    style="padding: 1em;">
+    <li>
+        Other second way is to use async/await where we define an async function and use await.
+    </li>
+    <img src="/assets/images/fetch2.png" alt="fetch-image-two"
+    style="padding: 1em;">
+</ul>
+</h3>
+
+
+<h1>Actual Fetch!</h1>
+
+<input type="text"id="pokemonName" placeholder="Enter Pokemon name">
+<button onclick="fetchData()">Fetch Pokemon!</button> <br>
+
+<img src="" alt="Pokemon Image" id="pokemonImage" style="display: none;">
+
+<script>
+
+fetch("https://pokeapi.co/api/v2/pokemon/pikachu")
+  .then((response) => {
+
+    if (!response.ok) {
+        throw new Error("Could not fetch ressource");
+    }
+    return response.json();
+  })
+  .then(data => console.log(data))
+  .catch((error) => console.log(error));
+
+  async function fetchData() {
+
+    const pokemonName = document.getElementById("pokemonName").value.toLowerCase();
+    
+
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+
+        if (!response.ok) {
+            throw new Error("Could not fetch ressource")
+        }
+        const data = await response.json();
+        const pokemonImage = data.sprites.front_default;
+        const imageElement = document.getElementById("pokemonImage");
+
+        imageElement.src = pokemonImage;
+        imageElement.style.display = "block";
+    }
+    catch (error) {
+        console.log(error);
+    }
+  }
+</script>
+
