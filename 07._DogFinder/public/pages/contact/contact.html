@@ -8,3 +8,18 @@
         <p>Located in London, England</p>
         <p>dogfinder@mail.com</p>
         <p>+44 1632 960805</p>
+
+        <form action="/api/contact" method="POST">
+                <div>
+                <label for="name">Name</label>
+                <input id="name" type="text" required placeholder="Your Name">
+
+                <label for="email">Email</label>
+                <input id="email" type="email" required placeholder="yourmail@mail.com">
+                </div>
+
+                <label for="message">Message</label>
+                <textarea id="message" cols="100" rows="10"></textarea>
+        
+                <button aria-label="Submit Form">Submit</button>
+              </form>
