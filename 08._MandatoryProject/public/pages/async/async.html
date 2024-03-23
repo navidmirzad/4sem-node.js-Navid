@@ -1,0 +1,36 @@
+<h1>What is Async, await and promises?</h1>
+
+<h3>Like I showed earlier in <a href="/fetch">/fetch</a> a promise is an asynchronous event in JavaScript. <br>
+It has 3 states: 
+<ul>
+    <li>
+        Pending: initial state before the event has happend.
+    </li>
+    <li>
+        Resolved: After the operation completed succesfully.
+    </li>
+    <li>
+        Rejected: If there was an error during execution, the promise gets rejected.
+    </li>
+</ul>
+
+<h2>Key differences between .then & await/async</h2>
+<h3>
+    <ul>
+        <li>
+            Error handling if using .then, is writing the <pre><code>catch((error) => console.log(error));</pre></code>
+        </li>
+        <li>
+            Error handling if using async/await: <pre><code>try { relevant code } catch (error) { console.log(error); } </code></pre>
+        </li>
+    </ul>
+    <h2>Async/Await is typically prefered over the .then method as it provides a cleaner and more customizeable way of working with promises.</h2>
+    <h4>And then it is also because of <i>Callback hell...</i></h4>
+</h3>
+
+<h2>---------------------------------------------------------------------------------------------------------------------------------</h2>
+<h2>In the #1 example under this, I am using the <i>.then</i> and in the #2 example I am i using <i>async/await:</i></h2>
+<h2>---------------------------------------------------------------------------------------------------------------------------------</h2>
+<br>
+<img src="/assets/images/promises.png" alt="Image of promise example">
+</h3>
