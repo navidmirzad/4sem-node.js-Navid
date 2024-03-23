@@ -1,0 +1,47 @@
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div>
+        <h1>SSR</h1>
+        <ul>
+            <li><b>SEO Optimized</b>: Because SEO primarily looks through the keywords <br>
+                 on the server rendered content, hence why SSR is more search engine optimized</li>
+            <li><b>Loads incredibly fast</b>: As the server is rendering a static page, and therefore <br>
+            is no need to wait for any async/await promises</li>
+            <li><b>No JS dependency</b>: because it is a static website, also we can dynamically <br> inject JS if needed</li>
+            <li><b>Not ideal if there is a lot of interactivity on the webpage.</b> And then again <br>
+            We can always inject JS-interactivity ourselves, and just have some components SSR.</li>
+        </ul>
+    </div>
+    <div>
+        <h1>CSR</h1>
+        <ul>
+            <li><b>Fast site rendering after initial load</b>: Client side rendering loads slower <br>
+                compared to SSR, as there is API response delays, and we <br>
+                have to wait until it loads the data.</li>
+            <li><b>Initial HTML is minimal:</b> The initial HTML file contains just the structure, <br>
+                and references to the JS files. The browser then executes the js, and generates content <br>
+                on the client-side, which is the opposite to SSR.</li>
+            <li><b>Not great for SEO:</b> As a the content is rendered on the client-side, <br>
+                   it is therefore not on the initial page when the SEO scans for keywords.</li>
+        </ul>
+    </div>
+</div>
+
+<h1><i>Server side rendering:</i></h1>    
+<div style="display: flex;">
+<img src="/assets/images/ssr.png" alt="fetch-image" style="width: 700px;">
+<ul>
+    <li>
+        In my app.js I have the line: <br>
+        <pre><code>import express from "express";
+
+const app = express();
+    
+app.use(express.static("public"));</code>
+    </li>
+    <li>First thing we do is import express from the express libary which is a great Node.JS web framework.</li> <br>
+    <li><i>const app = express();</i> - is where we create an instance of express, and use it for routing and handling HTTP requests</li> <br>
+    <li><i>app.use(express.static("public"));</i> - is where I tell express to serve static files from my public directory. <br>
+        ← As seen on the image here. Which will be served to clients when request them via the webserver.</li>
+</ul>
+</div>
