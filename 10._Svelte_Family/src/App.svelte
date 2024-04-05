@@ -1,4 +1,5 @@
 <script>
+    import Fridge from './components/Fridge/Fridge.svelte';
     import Home from './components/Home/Home.svelte';
     import Parent from './components/Parent/Parent.svelte';
 
@@ -25,3 +26,7 @@
     <Parent parentName={parents[1]} myChildren={children} />
     <h1>Svelte Family Home</h1>
 </Home>
+
+
+<h1>Basement</h1>
+<Fridge fridgeHeight={20}/>

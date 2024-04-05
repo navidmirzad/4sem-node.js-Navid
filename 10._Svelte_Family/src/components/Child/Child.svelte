@@ -13,9 +13,21 @@
             message: fridgeMessageInputValue
         }
 
-        fridgeMessages.set([...$fridgeMessages, newFridgeMessage]);
+        // Set for simple assignments or single objects/items
+        // fridgeMessages.set([...$fridgeMessages, newFridgeMessage]);
+        // fridgeMessageInputValue = "";
+
+
+        // used for more complex assignments
+        fridgeMessages.update((fridgeMessagesStoreValue) => {
+            fridgeMessagesStoreValue.push(newFridgeMessage);
+            return fridgeMessagesStoreValue;
+        });
+
         fridgeMessageInputValue = "";
     }
+
+
 </script>
 
 <div
@@ -33,7 +45,7 @@
     <button on:click={submitFridgeMessage}>Submit Fridge Message</button>
     <br><br>
 
-    <button on:click={() => onShowLove(child.name)}>Show Love 💚</button>
+    <button on:click={onShowLove(child.name)}>Show Love 💚</button>
 
     <button on:click={onTakeFromTreasureChest}>Take from Treasure Chest</button>
 </div>
