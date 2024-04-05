@@ -1,6 +1,7 @@
 <script>
     export let child;
     export let onShowLove;
+    export let onTakeFromTreasureChest;
 </script>
 
 <div
@@ -10,6 +11,7 @@
 >
     <h3>{child.name}</h3>
     <button on:click={() => onShowLove(child.name)}>Show Love 💚</button>
+    <button on:click={onTakeFromTreasureChest}>Take from Treasure Chest</button>
 </div>
 
 <style>
