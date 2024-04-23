@@ -1,8 +1,9 @@
-const express = require("express");
+import express, { json } from "express";
 const app = express();
-const bcrypt = require("bcrypt");
+import { hash, compare } from "bcrypt";
+import { pool, getUsers, getUser, createUser } from "./database";
 
-app.use(express.json());
+app.use(json());
 
 const users = [];
 
@@ -16,7 +17,7 @@ app.get("/users", (req, res) => {
 
 app.post("/users", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await hash(req.body.password, 10);
     const user = { name: req.body.name, password: hashedPassword };
     users.push(user);
     res.status(201).send();
@@ -31,7 +32,7 @@ app.post("/users/login", async (req, res) => {
     return res.status(400).send("Cannot find user");
   }
   try {
-    if (await bcrypt.compare(req.body.password, user.password)) {
+    if (await compare(req.body.password, user.password)) {
       res.send("Success");
     } else {
       res.send("Not Allowed");
