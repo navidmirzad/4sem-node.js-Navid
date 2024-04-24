@@ -2,20 +2,22 @@ GET http://localhost:8080/users
  
 ### 
 
-POST http://localhost:8080/users
+POST http://localhost:8080/signup
 Content-Type: application/json
 
 {
-    "name": "Navid",
-    "password": "password"
+    "username": "N",
+    "password": "M"
 }
 
 ###
 
-POST http://localhost:8080/users/login
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "name": "Navid",
-    "password": "password"
+    "username": "N",
+    "password": "M"
 }
+
+###

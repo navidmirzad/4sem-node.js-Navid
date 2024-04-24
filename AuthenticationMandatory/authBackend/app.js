@@ -1,45 +1,59 @@
-import express, { json } from "express";
+import express from "express";
+import { compare } from "bcrypt";
+import { createUser, getUser, getUsers } from "./database.js";
+import { authenticateToken } from "./middleware/middleware.js";
+import jwt from "jsonwebtoken";
+
 const app = express();
-import { hash, compare } from "bcrypt";
-import { pool, getUsers, getUser, createUser } from "./database";
 
-app.use(json());
+app.use(express.json());
 
-const users = [];
+const JWT_SECRET = process.env.JWT_SECRET;
 
-app.get("/login", (req, res) => {
-  // Authenticate User
+app.get("/posts", authenticateToken, (req, res) => {
+  req.json(posts.filter((post) => post.username === req.user.name));
+  // show a list of posts on the webpage
 });
 
-app.get("/users", (req, res) => {
+app.get("/users", async (req, res) => {
+  const users = await getUsers();
   res.json(users);
 });
 
-app.post("/users", async (req, res) => {
+app.post("/signup", async (req, res) => {
+  const { username, password } = req.body;
   try {
-    const hashedPassword = await hash(req.body.password, 10);
-    const user = { name: req.body.name, password: hashedPassword };
-    users.push(user);
-    res.status(201).send();
-  } catch {
-    res.status(500).send();
+    const user = await createUser(username, password);
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Error" });
   }
 });
 
-app.post("/users/login", async (req, res) => {
-  const user = users.find((user) => (user.name = req.body.name));
-  if (user == null) {
-    return res.status(400).send("Cannot find user");
-  }
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
   try {
-    if (await compare(req.body.password, user.password)) {
-      res.send("Success");
-    } else {
-      res.send("Not Allowed");
+    const user = await getUser(username);
+    if (!user) {
+      return res.status(400).json({ message: "Authentication failed" });
     }
-  } catch {
-    res.status(500).send();
+    const passwordMatch = await compare(password, user.password);
+    if (passwordMatch) {
+      const token = jwt.sign({ username: user.username }, JWT_SECRET);
+      res.json({ token });
+    } else {
+      res.status(401).json({ message: "Authentication failed" });
+    }
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+app.post("/logout", (req, res) => {
+  // Invalidate token and redirect to login page
+  res.json({ message: "User logged out successfully" });
 });
 
 const PORT = 8080;
