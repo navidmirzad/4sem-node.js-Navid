@@ -2,22 +2,44 @@ GET http://localhost:8080/users
  
 ### 
 
+# POST /signup - Create a new user
 POST http://localhost:8080/signup
 Content-Type: application/json
 
 {
-    "username": "N",
-    "password": "M"
+    "username": "testuser",
+    "password": "testpassword"
 }
 
 ###
 
+# POST /login - Login with the created user
 POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "username": "N",
-    "password": "M"
+    "username": "testuser",
+    "password": "testpassword"
 }
 
 ###
+
+# GET /posts - Get posts for authenticated user
+GET http://localhost:8080/posts
+Authorization: Bearer <token_from_login_response>
+
+###
+
+# POST /posts - Create a new post for authenticated user
+POST http://localhost:8080/posts
+Content-Type: application/json
+Authorization: Bearer <token_from_login_response>
+
+{
+    "title": "New Post"
+}
+
+###
+
+# POST /logout - Logout (no request body needed)
+POST http://localhost:8080/logout

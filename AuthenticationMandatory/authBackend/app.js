@@ -1,6 +1,12 @@
 import express from "express";
 import { compare } from "bcrypt";
-import { createUser, getUser, getUsers } from "./database.js";
+import {
+  createUser,
+  getUser,
+  getUsers,
+  createPost,
+  getPosts,
+} from "./database.js";
 import { authenticateToken } from "./middleware/middleware.js";
 import jwt from "jsonwebtoken";
 
@@ -10,9 +16,37 @@ app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-app.get("/posts", authenticateToken, (req, res) => {
-  req.json(posts.filter((post) => post.username === req.user.name));
-  // show a list of posts on the webpage
+const posts = [
+  {
+    username: "Navid",
+    title: "Post 1",
+  },
+  {
+    username: "N",
+    title: "Post 2",
+  },
+];
+
+app.get("/posts", authenticateToken, async (req, res) => {
+  try {
+    const posts = await getPosts(req.user.username);
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.post("/posts", authenticateToken, async (req, res) => {
+  const { title } = req.body;
+  const { username } = req.user;
+  try {
+    const post = await createPost(username, title);
+    res.status(201).json({ message: "Post created successfully", post });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 app.get("/users", async (req, res) => {

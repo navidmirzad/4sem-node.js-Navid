@@ -25,6 +25,24 @@ async function getUser(username) {
   return rows[0];
 }
 
+async function getPosts(username) {
+  const [rows] = await pool.query("SELECT * FROM posts WHERE username = ?", [
+    username,
+  ]);
+  return rows;
+}
+
+async function createPost(username, title) {
+  const [result] = await pool.query(
+    "INSERT INTO posts (username, title) VALUES (?, ?)",
+    [username, title]
+  );
+  return {
+    username,
+    title,
+  };
+}
+
 async function createUser(username, password) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -39,4 +57,4 @@ async function createUser(username, password) {
   };
 }
 
-export { pool, getUsers, getUser, createUser };
+export { pool, getUsers, getUser, createUser, createPost, getPosts };
