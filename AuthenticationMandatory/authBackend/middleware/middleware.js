@@ -1,4 +1,4 @@
-/* ///
+///
 
 import jwt from "jsonwebtoken";
 
@@ -16,5 +16,8 @@ function authenticateToken(req, res, next) {
   });
 }
 
-export { authenticateToken };
- */
+function generateAccessToken(user) {
+  return jwt.sign(user, JWT_SECRET, { expiresIn: "15s" });
+}
+
+export { authenticateToken, generateAccessToken };

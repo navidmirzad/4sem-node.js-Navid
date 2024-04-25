@@ -13,6 +13,22 @@ const pool = mysql
   })
   .promise();
 
+async function postRefreshToken(refreshToken) {
+  const [result] = await pool.query(
+    "INSERT INTO tokens (refreshTokens) VALUES (?)",
+    [refreshToken]
+  );
+  return {
+    refreshToken,
+  };
+}
+
+
+async function getRefreshTokens() {
+  const [rows] = await pool.query("SELECT * FROM tokens");
+  return rows;
+}
+
 async function getUsers() {
   const [rows] = await pool.query("SELECT * FROM users");
   return rows;
@@ -57,4 +73,13 @@ async function createUser(username, password) {
   };
 }
 
-export { pool, getUsers, getUser, createUser, createPost, getPosts };
+export {
+  pool,
+  getUsers,
+  getUser,
+  createUser,
+  createPost,
+  getPosts,
+  postRefreshToken,
+  getRefreshTokens,
+};

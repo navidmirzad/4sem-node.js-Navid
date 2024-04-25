@@ -6,15 +6,18 @@ import {
   getUsers,
   createPost,
   getPosts,
+  postRefreshToken,
+  getRefreshTokens,
 } from "./database.js";
 import jwt from "jsonwebtoken";
-//import { authenticateToken } from "./middleware/middleware.js";
+//import { authenticateToken, generateAccessToken } from "./middleware/middleware.js";
 
 const app = express();
 
 app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET;
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -27,6 +30,35 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+function generateAccessToken(user) {
+  return jwt.sign(user, JWT_SECRET, { expiresIn: 900 });
+}
+
+app.post("/tokens", async (req, res) => {
+  const refreshToken = req.body.token;
+  if (!refreshToken) return res.sendStatus(401);
+
+  try {
+    const currentRefreshTokens = await getRefreshTokens();
+    // Check if the provided refreshToken exists in the database
+    const tokenExists = currentRefreshTokens.some(
+      (tokenData) => tokenData.refreshToken === refreshToken
+    );
+    
+    if (!tokenExists) return res.sendStatus(403);
+
+    jwt.verify(refreshToken, REFRESH_JWT_SECRET, async (err, user) => {
+      if (err) return res.sendStatus(403);
+
+      const accessToken = generateAccessToken(user);
+      res.json({ accessToken: accessToken });
+    });
+  } catch (error) {
+    console.error("Error checking refresh token:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 app.get("/posts", authenticateToken, async (req, res) => {
   try {
@@ -50,6 +82,7 @@ app.post("/posts", authenticateToken, async (req, res) => {
   }
 });
 
+// ONLY FOR TEST PURPOSES, remember to delete
 app.get("/users", async (req, res) => {
   const users = await getUsers();
   res.json(users);
@@ -59,7 +92,7 @@ app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await createUser(username, password);
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "User created successfully", user: user });
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Error" });
@@ -75,8 +108,10 @@ app.post("/login", async (req, res) => {
     }
     const passwordMatch = await compare(password, user.password);
     if (passwordMatch) {
-      const token = jwt.sign({ username: user.username }, JWT_SECRET);
-      res.json({ token });
+      const token = generateAccessToken(user, JWT_SECRET);
+      const refreshToken = jwt.sign(user, REFRESH_JWT_SECRET);
+      const validateRefreshToken = await postRefreshToken(refreshToken);
+      res.json({ token: token, refreshToken: refreshToken });
     } else {
       res.status(401).json({ message: "Authentication failed" });
     }
@@ -86,8 +121,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
-  // Invalidate token and redirect to login page
+app.delete("/logout", (req, res) => {
+  // Invalidate token (delete it from the database) and redirect to login page
   res.json({ message: "User logged out successfully" });
 });
 

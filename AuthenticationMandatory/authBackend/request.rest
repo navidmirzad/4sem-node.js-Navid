@@ -26,7 +26,7 @@ Content-Type: application/json
 
 # GET /posts - Get posts for authenticated user
 GET http://localhost:8080/posts
-Authorization: Bearer <token_from_login_response>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInBhc3N3b3JkIjoiJDJiJDEwJG9XR1ZDQk41bUdyRDlKR2dCM2p2Ri4yWUFpZEVUcUM4djN3QW5ZTzNhV1hmMEZvd0xyc2NPIiwiaWF0IjoxNzE0MDY2MDk5LCJleHAiOjE3MTQwNjY5OTl9.FJSdLgf_ALAHBEHjtqx5pWsUBRntCglCO3ZVyTYzNcw
 
 ###
 
@@ -44,3 +44,15 @@ Authorization: Bearer <token_from_login_response>
 
 # POST /logout - Logout (no request body needed)
 POST http://localhost:8080/logout
+
+
+###
+
+POST http://localhost:8080/tokens
+Content-Type: application/json
+
+{
+    "token": ""
+}
+
+###
