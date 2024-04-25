@@ -7,8 +7,8 @@ import {
   createPost,
   getPosts,
 } from "./database.js";
-import { authenticateToken } from "./middleware/middleware.js";
 import jwt from "jsonwebtoken";
+//import { authenticateToken } from "./middleware/middleware.js";
 
 const app = express();
 
@@ -16,16 +16,17 @@ app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const posts = [
-  {
-    username: "Navid",
-    title: "Post 1",
-  },
-  {
-    username: "N",
-    title: "Post 2",
-  },
-];
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
 
 app.get("/posts", authenticateToken, async (req, res) => {
   try {

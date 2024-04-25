@@ -36,6 +36,7 @@ Content-Type: application/json
 Authorization: Bearer <token_from_login_response>
 
 {
+    "username": "testuser",
     "title": "New Post"
 }
 
