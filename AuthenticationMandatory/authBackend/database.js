@@ -23,8 +23,6 @@ async function postRefreshToken(refreshToken, username) {
   };
 }
 
-
-
 async function getRefreshTokens() {
   const [rows] = await pool.query("SELECT * FROM tokens");
   return rows;
