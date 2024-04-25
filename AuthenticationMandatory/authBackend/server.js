@@ -8,6 +8,7 @@ import {
   getPosts,
   postRefreshToken,
   getRefreshTokens,
+  deleteRefreshToken,
 } from "./database.js";
 import jwt from "jsonwebtoken";
 //import { authenticateToken, generateAccessToken } from "./middleware/middleware.js";
@@ -121,10 +122,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.delete("/logout", (req, res) => {
+app.delete("/logout", async (req, res) => {
   // Invalidate token (delete it from the database) and redirect to login page
-  res.json({ message: "User logged out successfully" });
+  const refreshToken = req.headers.authorization.split(" ")[1];
+  if (!refreshToken) return res.sendStatus(401);
+
+  try {
+    await deleteRefreshToken(refreshToken);
+    res.json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Error logging out:", error);
+    res.json({ message: "Internal Server Error" });
+  }
 });
+
 
 const PORT = 8080;
 app.listen(PORT, () => console.log("Server is running on PORT: " + PORT));

@@ -28,6 +28,10 @@ async function getRefreshTokens() {
   return rows;
 }
 
+async function deleteRefreshToken(refreshToken,) {
+  await pool.query("DELETE FROM tokens WHERE refreshToken = ?", [refreshToken]);
+}
+
 async function getUsers() {
   const [rows] = await pool.query("SELECT * FROM users");
   return rows;
@@ -81,4 +85,5 @@ export {
   getPosts,
   postRefreshToken,
   getRefreshTokens,
+  deleteRefreshToken,
 };
