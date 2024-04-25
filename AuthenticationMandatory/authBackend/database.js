@@ -13,15 +13,16 @@ const pool = mysql
   })
   .promise();
 
-async function postRefreshToken(refreshToken) {
+async function postRefreshToken(refreshToken, username) {
   const [result] = await pool.query(
-    "INSERT INTO tokens (refreshTokens) VALUES (?)",
-    [refreshToken]
+    "INSERT INTO tokens (refreshToken, username) VALUES (?, ?)",
+    [refreshToken, username]
   );
   return {
     refreshToken,
   };
 }
+
 
 
 async function getRefreshTokens() {

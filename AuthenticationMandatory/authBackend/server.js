@@ -45,7 +45,7 @@ app.post("/tokens", async (req, res) => {
     const tokenExists = currentRefreshTokens.some(
       (tokenData) => tokenData.refreshToken === refreshToken
     );
-    
+
     if (!tokenExists) return res.sendStatus(403);
 
     jwt.verify(refreshToken, REFRESH_JWT_SECRET, async (err, user) => {
@@ -108,10 +108,10 @@ app.post("/login", async (req, res) => {
     }
     const passwordMatch = await compare(password, user.password);
     if (passwordMatch) {
-      const token = generateAccessToken(user, JWT_SECRET);
+      const accessToken = generateAccessToken(user, JWT_SECRET);
       const refreshToken = jwt.sign(user, REFRESH_JWT_SECRET);
-      const validateRefreshToken = await postRefreshToken(refreshToken);
-      res.json({ token: token, refreshToken: refreshToken });
+      await postRefreshToken(refreshToken, username);
+      res.json({ token: accessToken, refreshToken: refreshToken });
     } else {
       res.status(401).json({ message: "Authentication failed" });
     }

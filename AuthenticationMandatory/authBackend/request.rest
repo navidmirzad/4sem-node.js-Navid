@@ -52,7 +52,7 @@ POST http://localhost:8080/tokens
 Content-Type: application/json
 
 {
-    "token": ""
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInBhc3N3b3JkIjoiJDJiJDEwJG9XR1ZDQk41bUdyRDlKR2dCM2p2Ri4yWUFpZEVUcUM4djN3QW5ZTzNhV1hmMEZvd0xyc2NPIiwiaWF0IjoxNzE0MDY5NTk2fQ.Hd89SaeDkzh4zYsy0NXzCF2SdqSuLlFZ8-418I6YyV0"
 }
 
 ###
