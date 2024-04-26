@@ -9,7 +9,8 @@ router.get("/api/volcanoes", async (req, res) => {
 });
 
 router.get("/api/villages", async (req, res) => {
-  res.send({});
+  const result = await db.all("SELECT * FROM villages");
+  res.send({ data: result });
 });
 
 export default router;
