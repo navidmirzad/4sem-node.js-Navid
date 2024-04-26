@@ -1,7 +1,6 @@
 import db from "./connection.js";
 
-const isDeleteMode = process.argv.find((arg) => arg === "delete");
-console.log(isDeleteMode);
+const isDeleteMode = process.argv.includes("delete");
 
 if (isDeleteMode) {
   await db.run(`DROP TABLE IF EXISTS volcanoes;`);

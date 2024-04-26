@@ -1,0 +1,14 @@
+GET http://localhost:8080/api/volcanoes
+
+###
+
+# POST /signup - Create a new user
+POST http://localhost:8080/api/villages
+Content-Type: application/json
+
+
+###
+
+POST http://localhost:8080/api/volcanoes
+Content-Type: application/json
+
