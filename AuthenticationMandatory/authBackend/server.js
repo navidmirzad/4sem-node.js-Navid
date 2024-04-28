@@ -9,6 +9,7 @@ import {
   postRefreshToken,
   getRefreshTokens,
   deleteRefreshToken,
+  createDB,
 } from "./database.js";
 import jwt from "jsonwebtoken";
 //import { authenticateToken, generateAccessToken } from "./middleware/middleware.js";
@@ -57,6 +58,18 @@ app.post("/tokens", async (req, res) => {
     });
   } catch (error) {
     console.error("Error checking refresh token:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.post("/database", async (req, res) => {
+  try {
+    await createDB();
+    res
+      .status(200)
+      .json({ message: "Database schema and tables created successfully" });
+  } catch (error) {
+    console.error("Error creating database schema and tables:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });

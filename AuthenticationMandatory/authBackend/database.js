@@ -87,6 +87,36 @@ async function createUser(username, password) {
   };
 }
 
+async function createDB() {
+  // SQL query to create the database schema and tables
+  const createDBQuery = `
+    CREATE DATABASE IF NOT EXISTS ${process.env.MYSQL_DATABASE};
+    USE ${process.env.MYSQL_DATABASE};
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS tokens (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      refreshToken VARCHAR(255) NOT NULL,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      username VARCHAR(255),
+      FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+    );
+    CREATE TABLE IF NOT EXISTS posts (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      username VARCHAR(255),
+      FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+    );
+  `;
+
+  // Execute the SQL query
+  await pool.query(createDBQuery);
+  console.log("Database schema and tables created successfully");
+}
+
 export {
   pool,
   getUsers,
@@ -97,4 +127,5 @@ export {
   postRefreshToken,
   getRefreshTokens,
   deleteRefreshToken,
+  createDB,
 };
