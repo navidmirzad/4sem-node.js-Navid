@@ -63,6 +63,11 @@ app.post("/tokens", async (req, res) => {
 
 app.get("/posts", authenticateToken, async (req, res) => {
   try {
+    const userExists = await getUser(req.user.username);
+    if (!userExists) {
+      return res.sendStatus(404).json({ message: "User doesn't exist" });
+    }
+
     const posts = await getPosts(req.user.username);
     res.json(posts);
   } catch (error) {
@@ -75,6 +80,11 @@ app.post("/posts", authenticateToken, async (req, res) => {
   const { title } = req.body;
   const { username } = req.user;
   try {
+    const userExists = await getUser(username);
+    if (!userExists) {
+      return res.sendStatus(404).json({ message: "User doesn't exist" });
+    }
+
     const post = await createPost(username, title);
     res.status(201).json({ message: "Post created successfully", post });
   } catch (error) {
@@ -135,7 +145,6 @@ app.delete("/logout", async (req, res) => {
     res.json({ message: "Internal Server Error" });
   }
 });
-
 
 const PORT = 8080;
 app.listen(PORT, () => console.log("Server is running on PORT: " + PORT));

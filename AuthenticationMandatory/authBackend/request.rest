@@ -44,7 +44,7 @@ Authorization: Bearer <token_from_login_response>
 
 # POST /logout - Logout (no request body needed)
 DELETE http://localhost:8080/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsInBhc3N3b3JkIjoiJDJiJDEwJG9XR1ZDQk41bUdyRDlKR2dCM2p2Ri4yWUFpZEVUcUM4djN3QW5ZTzNhV1hmMEZvd0xyc2NPIiwiaWF0IjoxNzE0MDcxMTM3fQ.pp3qjk_lHGkSlo2TQEYMYaWGs033WTRcH3vpMek00ho
+Authorization: Bearer <token_from_login_response>
 
 
 ###

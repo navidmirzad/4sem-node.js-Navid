@@ -28,7 +28,7 @@ async function getRefreshTokens() {
   return rows;
 }
 
-async function deleteRefreshToken(refreshToken,) {
+async function deleteRefreshToken(refreshToken) {
   await pool.query("DELETE FROM tokens WHERE refreshToken = ?", [refreshToken]);
 }
 
@@ -45,13 +45,24 @@ async function getUser(username) {
 }
 
 async function getPosts(username) {
-  const [rows] = await pool.query("SELECT * FROM posts WHERE username = ?", [
-    username,
-  ]);
+  const userExists = await getUser(username);
+  if (!userExists) {
+    throw new Error("User does not exist");
+  }
+
+  const [rows] = await pool.query(
+    "SELECT posts.title, users.username FROM posts JOIN users ON posts.username = users.username WHERE users.username = ?",
+    [username]
+  );
   return rows;
 }
 
 async function createPost(username, title) {
+  const userExists = await getUser(username);
+  if (!userExists) {
+    throw new Error("User does not exist");
+  }
+
   const [result] = await pool.query(
     "INSERT INTO posts (username, title) VALUES (?, ?)",
     [username, title]
