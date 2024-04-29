@@ -12,7 +12,10 @@ import {
   createDB,
 } from "./database.js";
 import jwt from "jsonwebtoken";
-//import { authenticateToken, generateAccessToken } from "./middleware/middleware.js";
+import {
+  authenticateToken,
+  generateAccessToken,
+} from "./middleware/middleware.js";
 
 const app = express();
 
@@ -21,7 +24,6 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET;
 
-function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
@@ -35,7 +37,8 @@ function authenticateToken(req, res, next) {
 
 function generateAccessToken(user) {
   return jwt.sign(user, JWT_SECRET, { expiresIn: 900 });
-}
+} */
+
 
 app.post("/tokens", async (req, res) => {
   const refreshToken = req.body.token;
