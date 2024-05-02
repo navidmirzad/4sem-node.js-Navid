@@ -121,8 +121,12 @@ app.post("/login", async (req, res) => {
     if (passwordMatch) {
       const accessToken = generateAccessToken(user, JWT_SECRET);
       const refreshToken = jwt.sign(user, REFRESH_JWT_SECRET);
-      await postRefreshToken(refreshToken, username);
-      res.json({ token: accessToken, refreshToken: refreshToken });
+      await postRefreshToken(accessToken, refreshToken, username);
+      res.json({
+        username: username,
+        token: accessToken,
+        refreshToken: refreshToken,
+      });
     } else {
       res.status(401).json({ message: "Authentication failed" });
     }

@@ -13,12 +13,14 @@ const pool = mysql
   })
   .promise();
 
-async function postRefreshToken(refreshToken, username) {
+async function postRefreshToken(accessToken, refreshToken, username) {
   const [result] = await pool.query(
-    "INSERT INTO tokens (refreshToken, username) VALUES (?, ?)",
-    [refreshToken, username]
+    "INSERT INTO tokens (accessToken, refreshToken, username) VALUES (?, ?, ?)",
+    [accessToken, refreshToken, username]
   );
   return {
+    username,
+    accessToken,
     refreshToken,
   };
 }
@@ -88,33 +90,51 @@ async function createUser(username, password) {
 }
 
 async function createDB() {
-  // SQL query to create the database schema and tables
-  const createDBQuery = `
-    CREATE DATABASE IF NOT EXISTS ${process.env.MYSQL_DATABASE};
-    USE ${process.env.MYSQL_DATABASE};
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      username VARCHAR(255) UNIQUE NOT NULL,
-      password VARCHAR(255) NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS tokens (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      refreshToken VARCHAR(255) NOT NULL,
-      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      username VARCHAR(255),
-      FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS posts (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      title VARCHAR(255) NOT NULL,
-      username VARCHAR(255),
-      FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
-    );
-  `;
+  // Create the database if it doesn't exist
+  await pool.query(
+    `CREATE DATABASE IF NOT EXISTS ${process.env.MYSQL_DATABASE}`
+  );
 
-  // Execute the SQL query
-  await pool.query(createDBQuery);
-  console.log("Database schema and tables created successfully");
+  // Use the database
+  await pool.query(`USE ${process.env.MYSQL_DATABASE}`);
+
+  try {
+    // Create the users table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL
+      )
+    `);
+
+    // Create the tokens table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tokens (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        accessToken TEXT NOT NULL,
+        refreshToken TEXT NOT NULL,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        username VARCHAR(255),
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    // Create the posts table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        username VARCHAR(255),
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    console.log("Database schema and tables created successfully");
+  } catch (error) {
+    console.error("Error creating database schema and tables:", error);
+    throw error; // Rethrow the error to be caught by the calling function
+  }
 }
 
 export {
