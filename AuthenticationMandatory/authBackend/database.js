@@ -75,17 +75,18 @@ async function createPost(username, title) {
   };
 }
 
-async function createUser(username, password) {
+async function createUser(username, password, email) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const [result] = await pool.query(
-    "INSERT INTO users (username, password) VALUES (?, ?)",
-    [username, hashedPassword]
+    "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+    [username, hashedPassword, email]
   );
   return {
     id: result.insertId,
     username,
     password: hashedPassword, // We're not returning the actual password for security reasons
+    email: email,
   };
 }
 
@@ -104,7 +105,8 @@ async function createDB() {
       CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL
       )
     `);
 
