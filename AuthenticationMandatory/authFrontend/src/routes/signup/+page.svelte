@@ -38,6 +38,7 @@
 				type="text"
 				id="username"
 				bind:value={username}
+				placeholder="Enter your username"
 				class="border border-gray-300 px-4 py-2 rounded-md w-full"
 			/>
 		</div>
@@ -47,6 +48,7 @@
 				type="password"
 				id="password"
 				bind:value={password}
+				placeholder="Enter your password"
 				class="border border-gray-300 px-4 py-2 rounded-md w-full"
 			/>
 		</div>
@@ -56,6 +58,7 @@
 				type="email"
 				id="email"
 				bind:value={email}
+				placeholder="Enter your email"
 				class="border border-gray-300 px-4 py-2 rounded-md w-full"
 			/>
 		</div>
