@@ -1,18 +1,15 @@
-import express from "express";
+import express, { text } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import nodemailer from "nodemailer";
 import { compare } from "bcrypt";
 import {
   createUser,
   getUser,
-  getUsers,
-  createPost,
-  getPosts,
   postRefreshToken,
   getRefreshTokens,
   deleteRefreshToken,
-  createDB,
-} from "./database.js";
+} from "./database/database.js";
 import jwt from "jsonwebtoken";
 import {
   authenticateToken,
@@ -61,54 +58,35 @@ app.post("/tokens", async (req, res) => {
   }
 });
 
-app.post("/database", async (req, res) => {
-  try {
-    await createDB();
-    res
-      .status(200)
-      .json({ message: "Database schema and tables created successfully" });
-  } catch (error) {
-    console.error("Error creating database schema and tables:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
+app.get("/protected", authenticateToken, (req, res) => {
+  res.statusCode(200).send("You are authenticated");
 });
 
-app.get("/posts", authenticateToken, async (req, res) => {
-  try {
-    const userExists = await getUser(req.user.username);
-    if (!userExists) {
-      return res.sendStatus(404).json({ message: "User doesn't exist" });
-    }
+app.post("/mail", async (req, res) => {
+  const { email } = req.body;
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "schuyler51@ethereal.email",
+      pass: "FZXjpaDupTqUAtgv52",
+    },
+  });
 
-    const posts = await getPosts(req.user.username);
-    res.json(posts);
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+  const msg = {
+    from: '"Mandatory II" <fullstackAuth@example.com>',
+    to: `${email}`,
+    subject: "User registration successful!",
+    text: "This is a test email sent from node.js using nodemailer!",
+  };
 
-app.post("/posts", authenticateToken, async (req, res) => {
-  const { title } = req.body;
-  const { username } = req.user;
-  try {
-    const userExists = await getUser(username);
-    if (!userExists) {
-      return res.sendStatus(404).json({ message: "User doesn't exist" });
-    }
+  let info = await transporter.sendMail(msg);
 
-    const post = await createPost(username, title);
-    res.status(201).json({ message: "Post created successfully", post });
-  } catch (error) {
-    console.error("Error creating post:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+  console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
-// ONLY FOR TEST PURPOSES, remember to delete
-app.get("/users", async (req, res) => {
-  const users = await getUsers();
-  res.json(users);
+  res.send("Email sent!");
 });
 
 app.post("/signup", async (req, res) => {
@@ -119,6 +97,38 @@ app.post("/signup", async (req, res) => {
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Error" });
+  }
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "schuyler51@ethereal.email",
+      pass: "FZXjpaDupTqUAtgv52",
+    },
+  });
+
+  const msg = {
+    from: '"Mandatory II" <fullstackAuth@example.com>',
+    to: email,
+    subject: "User registration successful!",
+    text: "This is a test email sent from node.js using nodemailer!",
+  };
+
+  try {
+    let info = await transporter.sendMail(msg);
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+    res
+      .status(200)
+      .json({ message: "User created successfully and email sent!" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while sending the email" });
   }
 });
 

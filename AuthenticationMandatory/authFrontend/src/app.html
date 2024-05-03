@@ -6,6 +6,7 @@
 	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	%sveltekit.head%
+	<link href="toastr.css" rel="stylesheet" />
 </head>
 
 <body class="flex flex-col min-h-screen bg-cover bg-center bg-fixed" style="background-color: #6e9fb2;"
@@ -22,14 +23,10 @@
 			</ul>
 		</nav>
 		<!-- Change this so that when logged in // JWT token authorized, show logout button - /logout -->
-		<div class="absolute top-0 right-0 flex space-x-4 pr-10">
-			<button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mt-4 rounded h-fit"
-				onclick="window.location.href='/login'">Login</button>
-			<button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 mt-4 rounded h-fit"
-				onclick="window.location.href='/signup'">Sign Up</button>
+		<div class="absolute top-0 right-0 flex space-x-4 pr-10" id="authButtons">
+			<!-- Buttons will be rendered dynamically here based on token presence -->
 		</div>
 	</div>
-
 
 	<div class="flex-grow">%sveltekit.body%</div>
 
@@ -45,6 +42,69 @@
 			font-family: 'Roboto', sans-serif;
 		}
 	</style>
+
+	<script>
+		const token = localStorage.getItem('accessToken');
+		const username = localStorage.getItem('username');
+
+		const authButtons = document.getElementById('authButtons');
+		const postsLink = document.getElementById('postsLink');
+
+		// Function to create and append logout button
+		const renderLogoutButton = () => {
+			const logoutButton = document.createElement('button');
+			logoutButton.classList.add('bg-red-500', 'hover:bg-red-600', 'text-white', 'font-bold', 'py-2', 'px-4', 'mt-4', 'rounded', 'h-fit');
+			logoutButton.textContent = 'Logout';
+			logoutButton.onclick = async () => {
+				try {
+					const response = await fetch('http://localhost:8080/logout', {
+						method: 'DELETE',
+						headers: {
+							'Authorization': `Bearer ${localStorage.getItem('refreshToken')}`
+						}
+					});
+					if (response.ok) {
+						localStorage.removeItem('accessToken');
+						localStorage.removeItem('refreshToken');
+						localStorage.removeItem('username');
+						window.location.href = '/';
+					} else {
+						console.error('Failed to logout:', response.statusText);
+					}
+				} catch (error) {
+					console.error('Error during logout:', error);
+				}
+			};
+			authButtons.appendChild(logoutButton);
+		};
+
+		// Function to create and append login and signup buttons
+		const renderLoginAndSignupButtons = () => {
+			const loginButton = document.createElement('button');
+			loginButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'text-white', 'font-bold', 'py-2', 'px-4', 'mt-4', 'rounded', 'h-fit');
+			loginButton.textContent = 'Login';
+			loginButton.onclick = () => {
+				window.location.href = '/login';
+			};
+			authButtons.appendChild(loginButton);
+
+			const signupButton = document.createElement('button');
+			signupButton.classList.add('bg-green-500', 'hover:bg-green-600', 'text-white', 'font-bold', 'py-2', 'px-4', 'mt-4', 'rounded', 'h-fit');
+			signupButton.textContent = 'Sign Up';
+			signupButton.onclick = () => {
+				window.location.href = '/signup';
+			};
+			authButtons.appendChild(signupButton);
+		};
+
+		// Render appropriate buttons based on token presence
+		if (token) {
+			renderLogoutButton();
+		} else {
+			renderLoginAndSignupButtons();
+		}
+
+	</script>
 
 </body>
 

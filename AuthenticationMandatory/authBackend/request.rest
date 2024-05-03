@@ -60,3 +60,12 @@ Content-Type: application/json
 ###
 
 POST http://localhost:8080/database
+
+###
+
+POST http://localhost:8080/mail
+Content-Type: application/json
+
+{
+    "email": "navidmirzad@hotmail.com"
+}

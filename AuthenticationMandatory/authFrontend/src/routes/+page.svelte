@@ -1,6 +1,8 @@
-<!-- // -->
-<!--  -->
-<!--  -->
+<script>
+	
+</script>
+
+
 <div class="mx-20 mt-20">
 	<h1 class="font-bold text-3xl mb-2">Auth in NodeJS & SvelteKit</h1>
 	<h2 class="font-bold text-3xl"><i>Mandatory II</i></h2>

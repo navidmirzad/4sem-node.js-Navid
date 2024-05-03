@@ -1,8 +1,29 @@
 <script>
+	import { writable } from 'svelte/store';
+
 	let username = '';
 	let password = '';
 	let accessToken = '';
 	let refreshToken = '';
+
+	import toastr from 'toastr';
+	import 'toastr/build/toastr.min.css';
+
+	toastr.options = {
+		closeButton: true,
+		progressBar: true,
+		positionClass: 'toast-top-right',
+		preventDuplicates: true,
+		newestOnTop: true,
+		showDuration: '300',
+		hideDuration: '1000',
+		timeOut: '5000',
+		extendedTimeOut: '1000',
+		showEasing: 'swing',
+		hideEasing: 'linear',
+		showMethod: 'fadeIn',
+		hideMethod: 'fadeOut'
+	};
 
 	async function login(event) {
 		event.preventDefault();
@@ -24,20 +45,15 @@
 			const data = await response.json();
 			accessToken = data.token;
 			refreshToken = data.refreshToken;
-			alert('Login successful!');
+			toastr.success('Login successful!');
 			// Store the tokens in local storage with expiration time
-			const accessTokenExpirationTime = new Date().getTime() + data.accessTokenExpiresIn * 900; // 15min
-			const refreshTokenExpirationTime =
-				new Date().getTime() + data.refreshTokenExpirationTime * 1800; // 30min
 			localStorage.setItem('accessToken', accessToken);
-			localStorage.setItem('accessTokenExpiresAt', accessTokenExpirationTime);
-
 			localStorage.setItem('refreshToken', refreshToken);
-			localStorage.setItem('refreshTokenExpiresAt', refreshTokenExpirationTime);
+			localStorage.setItem('username', username);
 
-			window.location.href = `/profile/${username}`;
+			window.location.href = `/about`;
 		} else {
-			alert('Login failed, try again...');
+			toastr.error('Login failed!');
 		}
 	}
 </script>

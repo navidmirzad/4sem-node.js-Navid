@@ -3,6 +3,25 @@
 	let password = '';
 	let email = '';
 
+	import toastr from 'toastr';
+	import 'toastr/build/toastr.min.css';
+
+	toastr.options = {
+		closeButton: true,
+		progressBar: true,
+		positionClass: 'toast-top-right',
+		preventDuplicates: true,
+		newestOnTop: true,
+		showDuration: '300',
+		hideDuration: '1000',
+		timeOut: '5000',
+		extendedTimeOut: '1000',
+		showEasing: 'swing',
+		hideEasing: 'linear',
+		showMethod: 'fadeIn',
+		hideMethod: 'fadeOut'
+	};
+
 	async function signUp(event) {
 		event.preventDefault(); // Prevent default form submission behavior
 
@@ -21,10 +40,10 @@
 		});
 
 		if (response.ok) {
-			alert('Sign up successful!');
+			toastr.success('User created successfully!');
 			window.location.href = '/login';
 		} else {
-			alert('Something went wrong, try again...');
+			toastr.error('Failed to create user!');
 		}
 	}
 </script>

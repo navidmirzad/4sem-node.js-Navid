@@ -1,3 +1,28 @@
+<script>
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		isAuthenticated();
+	});
+
+	async function isAuthenticated() {
+		const response = await fetch('http://localhost:8080/protected', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+			}
+		});
+
+		if (response.ok) {
+			toastr.success('You are authenticated!');
+		} else {
+			toastr.error('You are not authenticated!');
+			window.location.href = '/login';
+		}
+	}
+</script>
+
 <div class="max-w-3xl mx-auto p-4 mt-6 mb-6 bg-[#ffffff] rounded-lg">
 	<h1 class="text-3xl font-bold mb-4">About - Mandatory II</h1>
 
