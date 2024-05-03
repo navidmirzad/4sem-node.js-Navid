@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	%sveltekit.head%
+</head>
+
+<body class="flex flex-col min-h-screen bg-cover bg-center bg-fixed" style="background-color: #6e9fb2;"
+	data-sveltekit-preload-data="hover">
+
+	<div id="header" class="relative">
+		<div class="text-white hover:text-gray-300 absolute left-0 pt-5 pl-5">
+			<a href="/" class="font-bold text-2xl">MANDATORY II</a>
+		</div>
+		<nav class="bg-[#30696f] flex justify-center">
+			<ul class="flex justify-center space-x-4 py-6 px-4 text-xl">
+				<li><a href="/" class="text-white hover:text-gray-300">Home</a></li>
+				<li><a href="/about" class="text-white hover:text-gray-300">About</a></li>
+			</ul>
+		</nav>
+		<!-- Change this so that when logged in // JWT token authorized, show logout button - /logout -->
+		<div class="absolute top-0 right-0 flex space-x-4 pr-10">
+			<button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mt-4 rounded h-fit"
+				onclick="window.location.href='/login'">Login</button>
+			<button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 mt-4 rounded h-fit"
+				onclick="window.location.href='/signup'">Sign Up</button>
+		</div>
+	</div>
+
+
+	<div class="flex-grow">%sveltekit.body%</div>
+
+	<footer class="bg-[#30696f] text-white text-center py-4 text-xl">
+		<p> By Navid Mirzad.</p>
+		<p>© 2024 All rights reserved</p>
+	</footer>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+		body {
+			font-family: 'Roboto', sans-serif;
+		}
+	</style>
+
+</body>
+
+</html>

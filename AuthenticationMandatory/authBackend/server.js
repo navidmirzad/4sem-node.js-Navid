@@ -1,4 +1,6 @@
 import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
 import { compare } from "bcrypt";
 import {
   createUser,
@@ -20,6 +22,16 @@ import {
 const app = express();
 
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow requests from this origin
+    methods: ["GET", "POST", "DELETE", "PATCH", "PUT"], // Allow only GET and POST requests
+    allowedHeaders: ["Content-Type", "Authorization", "Bearer"], // Allow these headers
+  })
+);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_JWT_SECRET = process.env.REFRESH_JWT_SECRET;
@@ -100,9 +112,9 @@ app.get("/users", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   try {
-    const user = await createUser(username, password);
+    const user = await createUser(username, password, email);
     res.status(201).json({ message: "User created successfully", user: user });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -121,8 +133,12 @@ app.post("/login", async (req, res) => {
     if (passwordMatch) {
       const accessToken = generateAccessToken(user, JWT_SECRET);
       const refreshToken = jwt.sign(user, REFRESH_JWT_SECRET);
-      await postRefreshToken(refreshToken, username);
-      res.json({ token: accessToken, refreshToken: refreshToken });
+      await postRefreshToken(accessToken, refreshToken, username);
+      res.json({
+        username: username,
+        token: accessToken,
+        refreshToken: refreshToken,
+      });
     } else {
       res.status(401).json({ message: "Authentication failed" });
     }

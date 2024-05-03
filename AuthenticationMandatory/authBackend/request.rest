@@ -8,7 +8,8 @@ Content-Type: application/json
 
 {
     "username": "testuser",
-    "password": "testpassword"
+    "password": "testpassword",
+    "email": "testemail@mail.com"
 }
 
 ###
@@ -57,5 +58,10 @@ Content-Type: application/json
 }
 
 ###
+<<<<<<< HEAD
 
 POST http://localhost:8080/database
+=======
+POST http://localhost:8080/database
+
+>>>>>>> 05026549b9104eafd853048f72dd2a729885de48
